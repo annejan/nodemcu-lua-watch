@@ -1,2 +1,2 @@
-# nodemcu-lua-watch
-ESP8266 nodemcu lua code for IJwatch project
+# NodeMcu Lua watch
+ESP8266 NodeMcu Lua code for ijWatch project
