@@ -1,3 +1,6 @@
+wifi.setmode(wifi.STATION)
+wifi.sta.config("JinXed","AnneJanBrouwer")
+
 sda = 3
 scl = 4
 sla = 0x3c
@@ -10,22 +13,44 @@ disp:setFontRefHeightExtendedText()
 disp:setDefaultForegroundColor()
 disp:setFontPosTop()
 
-function drawAnus()
+function drawWatch()
+	disp:drawCircle(96, 32, 32)
 	disp:drawStr(0, 0, "ijWatch")
 end
 
-function drawCircle()
-     disp:drawStr(0, 0, "ijWatch 0.1.8")
-     disp:drawCircle(10, 18+30, 9)
-     disp:drawCircle(24, 16+30, 7)
+function drawWaiting()
+  drawWatch()	
+  disp:drawStr(0, 9, "connecting")
+end
+
+function drawTime(tijd)
+  disp:firstPage()
+  repeat
+    drawWatch()
+    disp:drawStr(0, 9, tijd)
+  until disp:nextPage() == false
 end
 
 disp:firstPage()
 repeat
-	drawAnus()
+	drawWatch()
 until disp:nextPage() == false
 
-disp:firstPage()
-repeat
-	drawCircle()
-until disp:nextPage() == false
+wifi.sta.connect()
+
+tmr.alarm(1, 1000, 1, function()
+  drawn = false
+  if wifi.sta.getip() == nil then
+    if not drawn then
+      disp:firstPage()
+      repeat
+        drawWaiting()
+      until disp:nextPage() == false
+      drawn = true
+    else
+      tmr.stop(1)
+      oled.line(2,2,wifi.sta.getip())
+      loadfile("ntp.lua")():sync(function(T) drawTime(T:show_time()) end) 
+    end
+  end
+end
