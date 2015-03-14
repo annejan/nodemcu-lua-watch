@@ -14,8 +14,8 @@ disp:setDefaultForegroundColor()
 disp:setFontPosTop()
 
 function drawWatch()
-	disp:drawCircle(96, 32, 32)
-	disp:drawStr(0, 0, "ijWatch")
+  disp:drawCircle(96, 32, 32)
+  disp:drawStr(0, 0, "ijWatch")
 end
 
 function drawTime(tijd)
@@ -30,7 +30,7 @@ end
 
 disp:firstPage()
 repeat
-	drawWatch()
+  drawWatch()
 until disp:nextPage() == false
 
 wifi.sta.connect()
@@ -57,3 +57,5 @@ tmr.alarm(1, 1000, 1, function()
     end
   end
 end
+
+-- dsleep(60000000)
