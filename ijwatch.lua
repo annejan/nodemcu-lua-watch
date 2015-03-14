@@ -18,16 +18,13 @@ function drawWatch()
 	disp:drawStr(0, 0, "ijWatch")
 end
 
-function drawWaiting()
-  drawWatch()	
-  disp:drawStr(0, 9, "connecting")
-end
-
 function drawTime(tijd)
   disp:firstPage()
   repeat
     drawWatch()
-    disp:drawStr(0, 9, tijd)
+    disp:setFont(u8g.font_9x15)
+    disp:drawStr(0, 32, tijd)
+    disp:setFont(u8g.font_6x10)
   until disp:nextPage() == false
 end
 
@@ -44,12 +41,18 @@ tmr.alarm(1, 1000, 1, function()
     if not drawn then
       disp:firstPage()
       repeat
-        drawWaiting()
+        drawWatch()	
+        disp:drawStr(0, 11, "connecting")
       until disp:nextPage() == false
       drawn = true
     else
       tmr.stop(1)
-      oled.line(2,2,wifi.sta.getip())
+      disp:firstPage()
+      repeat
+        drawWatch()	
+        disp:drawStr(0, 11, wifi.sta.getip())
+      until disp:nextPage() == false
+      
       loadfile("ntp.lua")():sync(function(T) drawTime(T:show_time()) end) 
     end
   end
