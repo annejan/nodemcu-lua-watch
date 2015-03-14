@@ -1,6 +1,3 @@
-wifi.setmode(wifi.STATION)
-wifi.sta.config("JinXed","AnneJanBrouwer")
-
 sda = 3
 scl = 4
 sla = 0x3c
@@ -56,6 +53,6 @@ tmr.alarm(1, 1000, 1, function()
       loadfile("ntp.lua")():sync(function(T) drawTime(T:show_time()) end) 
     end
   end
-end
+end)
 
 -- dsleep(60000000)
